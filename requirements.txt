@@ -1,0 +1,16 @@
+colour=0.1.5=pypi_0
+einops=0.7.0=pypi_0
+matplotlib=3.7.5=pypi_0
+numpy=1.26.2=py39h5f9d8c6_0
+opencv-python=4.8.1.78=pypi_0
+pandas=2.2.2=pypi_0
+pillow=10.1.0=pypi_0
+python=3.9.18=h955ad1f_0
+pytorch=1.12.1=py3.9_cuda11.6_cudnn8.3.2_0
+pytorch-msssim=1.0.0=pypi_0
+rawpy=0.19.0=pypi_0
+scikit-image=0.22.0=pypi_0
+scipy=1.11.4=pypi_0
+torchaudio=0.12.1=py39_cu116
+torchvision=0.13.1=py39_cu116
+
