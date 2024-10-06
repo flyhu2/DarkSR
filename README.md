@@ -6,9 +6,7 @@ PyTorch code for our ACCV 2024 paper `Joint Image Super-resolution and Low-light
 
 You can download this dataset from [Google Cloud Drive](https://drive.google.com/drive/folders/1i68Vs-l21UtOMIsVlXnVoxvFKVqrLyKb?usp=sharing) or [Baidu Cloud Drive](https://drive.google.com/drive/folders/1i68Vs-l21UtOMIsVlXnVoxvFKVqrLyKb?usp=sharing). And 1395 pairs of RAW and sRGB images for training, 153 for testing. 
 
-The training and testing code will come soon...
-
-
+Now the inference/test code and our DarkSR dataset are available, and the training code and experimental settings will come soon...
 
 In general, you only need to download `DarkSR.rar` and `Real-DarkSR.rar`, the others are the images of a specific camera model classified from DarkSR.
 
