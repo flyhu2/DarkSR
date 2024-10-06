@@ -31,7 +31,6 @@ class DWT(nn.Module):
     def forward(self, x):
         return self.dwt(x)
 
-# 逆向二维离散小波
 class IDWT(nn.Module):
     def __init__(self):
         super(IDWT, self).__init__()
