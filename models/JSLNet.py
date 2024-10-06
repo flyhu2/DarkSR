@@ -1,5 +1,4 @@
 import math
-
 import cv2
 import numpy as np
 import torch
@@ -7,29 +6,25 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 import numbers
-'''
-use wavelet transform to be a framework
 
-'''
- 
-# 二维离散小波
+### Use wavelet transform to be a framework
 class DWT(nn.Module):
     def __init__(self):
         super(DWT, self).__init__()
-        self.requires_grad = False  # 信号处理，非卷积运算，不需要进行梯度求导
-
+        self.requires_grad = False  
+     
     def dwt(self,x):
 
-        x01 = x[:, :, 0::2, :] / 2#4,3,128,256
-        x02 = x[:, :, 1::2, :] / 2#4,3,128,256
-        x1 = x01[:, :, :, 0::2]#4,3,128,128
-        x2 = x02[:, :, :, 0::2]#4,3,128,128
-        x3 = x01[:, :, :, 1::2]#4,3,128,128
-        x4 = x02[:, :, :, 1::2]#4,3,128,128
-        x_LL = x1 + x2 + x3 + x4 #4,3,128,128
-        x_HL = -x1 - x2 + x3 + x4#4,3,128,128
-        x_LH = -x1 + x2 - x3 + x4#4,3,128,128
-        x_HH = x1 - x2 - x3 + x4#4,3,128,128
+        x01 = x[:, :, 0::2, :] / 2
+        x02 = x[:, :, 1::2, :] / 2
+        x1 = x01[:, :, :, 0::2]
+        x2 = x02[:, :, :, 0::2]
+        x3 = x01[:, :, :, 1::2]
+        x4 = x02[:, :, :, 1::2]
+        x_LL = x1 + x2 + x3 + x4 
+        x_HL = -x1 - x2 + x3 + x4
+        x_LH = -x1 + x2 - x3 + x4
+        x_HH = x1 - x2 - x3 + x4
 
         return x_LL, x_HL, x_LH, x_HH
 
@@ -166,8 +161,7 @@ class Attention(nn.Module):
 class TransformerBlock(nn.Module):
     def __init__(self, dim=64, num_heads=4, bias=False, LayerNorm_type='WithBias'):
         super(TransformerBlock, self).__init__()
-        #self.encoder_R = nn.Conv2d(3,dim,3,1,1)
-        #self.encoder_S = nn.Conv2d(3,dim,3,1,1)
+     
         self.norm1 = LayerNorm(dim, LayerNorm_type)
         self.attn = Attention(dim, num_heads, bias)
         self.norm2 = LayerNorm(dim, LayerNorm_type)
@@ -175,23 +169,16 @@ class TransformerBlock(nn.Module):
         self.out3 = nn.Conv2d(dim,3,3,1,1)
 
     def forward(self, input_R, input_S):
-        #input_R = self.encoder_R(input_R)#[3,32,32]
-        input_R_normal = self.norm1(input_R)#[32,32,32]
-        #input_S = self.encoder_S(input_S)
-        input_S_normal = self.norm1(input_S)#[32,32,32]
+        input_R_normal = self.norm1(input_R)
+        input_S_normal = self.norm1(input_S)
         input_R_attened = input_R + self.attn(input_R_normal, input_S_normal)
         out = self.ffn(input_S,input_R_attened)
-        #out1 = self.out3(out)
         return out
 
 class ChannelAttentionLayer(nn.Module):
-    # Channel Attention (CA) Layer
-    # 通道注意力层，输出为 输入*通道注意力
     def __init__(self, channel, bias):
         super(ChannelAttentionLayer, self).__init__()
-        # global average pooling: feature --> point，一个通道化为一个点
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)#自适应平均池化，指定输出尺寸
-        # feature channel downscale and upscale --> channel weight
+        self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.conv_du = nn.Sequential(
                 nn.Conv2d(channel, 4, 1, padding=0, bias=bias),
                 nn.LeakyReLU(negative_slope=0.2, inplace=True),
@@ -204,7 +191,6 @@ class ChannelAttentionLayer(nn.Module):
         return x * y
 
 class RCAB(nn.Module):
-    #残差通道注意力块
     def __init__(self, in_channel):
         super(RCAB, self).__init__()
         self.body = nn.Sequential(*[
@@ -214,13 +200,11 @@ class RCAB(nn.Module):
             ChannelAttentionLayer(in_channel, True)
         ])
     def forward(self, x):
-        # x+x*y，输出为 输入+乘以通道注意力后的输入
         out = self.body(x)
         out += x
         return out
 
 class RCAG(nn.Module):
-    #残差通道注意力组，RCAB的组合
     def __init__(self, num_RCAB, inchannel):
         super(RCAG, self).__init__()
         body = []
@@ -232,9 +216,9 @@ class RCAG(nn.Module):
     def forward(self, x):
         out = self.body(x)
         out += x
-        #输入加上 n个RCAB级联后经过3*3卷积
         return out
-### DEM
+     
+### Wavelet Enhancement Network is here!
 class Wavelet_NET(nn.Module):
     def __init__(self,dim_in=32,dim_out=3,num_FAM=1,num_RCAG=3,num_RCAB=4):
         super().__init__()
@@ -277,7 +261,6 @@ class Wavelet_NET(nn.Module):
         for i in range(self.num_RCAG):
             x = self.RCAGs[i](x)
             RCAGs_out.append(x)
-        #print('raw feature:',raw.shape)
         x = self.GFF(torch.cat(RCAGs_out,1))
         x = x + feat
         out = self.output(x)        
@@ -292,13 +275,13 @@ class TransformerBlock_self(nn.Module):
         self.ffn = FeedForward(dim, bias)
 
     def forward(self, input_R):
-        # input_ch = input_R.size()[1]
         input_R1 = self.norm1(input_R)
         input_R2 = self.norm2(input_R)
         input_R_attened = input_R + self.attn(input_R1, input_R2)
         out = self.ffn(input_R,input_R_attened)
         return out
- 
+
+### The RAW branch is here!
 class RAW(nn.Module):
     def __init__(self,dim_in=32,dim_out=32,num_RCAG=2,num_RCAB=4):
         super().__init__()
@@ -331,6 +314,7 @@ class RAW(nn.Module):
         feat = self.output(x)
         return feat
 
+### The sRGB branch is here!
 class RGB(nn.Module):
     def __init__(self,dim_in=32,dim_out=32,num_RCAG=2,num_RCAB=4):
         super().__init__()
@@ -361,6 +345,7 @@ class RGB(nn.Module):
         feat = self.output(x)
         return feat
 
+### The whole framework is here!
 class JSLNet(nn.Module):
     def __init__(self,
                  num_wavelet=4, # LL,LH,HL,HH
@@ -369,23 +354,23 @@ class JSLNet(nn.Module):
                  post_in_dim=36,
                  post_out_dim=3, # RGB output
                  num_RCAG=2,
-                 num_FAM=1,# 1 or 2 
+                 num_FAM=1, 
                  num_RCAB=4):
         super().__init__()
 
         self.num_wavelet = num_wavelet
         self.rgb = RGB(pre_in_dim,pre_out_dim,num_RCAG,num_RCAB)
         self.raw = RAW(pre_in_dim,pre_out_dim,num_RCAG,num_RCAB)
-        self.raw_dwt_decom = DWT()#[256,256,dim_out]-[256,256,dim_out]x4
-        self.rgb_dwt_decom = DWT()#[256,256,dim_out]-[256,256,dim_out]x4
-        self.idwt_recons = IDWT()#[256,256,3]x4->[512,512,3]
+        self.raw_dwt_decom = DWT()
+        self.rgb_dwt_decom = DWT()
+        self.idwt_recons = IDWT()
         self.conv_last = nn.Conv2d(3,3,3,1,1)
 
         for i in range(self.num_wavelet):
             self.__setattr__('wavelet_layer_{}'.format(i),\
             Wavelet_NET(post_in_dim,post_out_dim,num_FAM,num_RCAG,num_RCAB))
             
-    def rgb2raw(self,img):       # pack [H,W,3] -> [H//2,W//2,4]
+    def rgb2raw(self,img):       
         b,_,h,w = img.shape
         raw = torch.zeros([b,4,h//2,w//2],dtype=torch.float).cuda()
         img = img.squeeze(1)
@@ -397,7 +382,6 @@ class JSLNet(nn.Module):
 
     def forward(self, raw, isp):
         rgb_feat = self.rgb_dwt_decom(self.rgb(isp))
-        #print('isp feature:',rgb_feat[0].shape)
         raw_pack = self.rgb2raw(raw)
         raw_feat = self.raw_dwt_decom(self.raw(raw_pack))
         trans_wavelets = []
