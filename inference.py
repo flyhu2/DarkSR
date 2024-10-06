@@ -8,8 +8,8 @@ import numpy as np
 
 parser = argparse.ArgumentParser(description='inference Configure File')
 parser.add_argument('--input_type', type=str, default='dual', help='the input type')# dual,raw,srgb
-parser.add_argument('--model_path', type=str, default='models', help='model root path')#baseline文件夹下的模型transformer
-parser.add_argument('--s_experiment_name', type=str, default='0527_DarkSR_JSLNet', help='model name')
+parser.add_argument('--model_path', type=str, default='models', help='model root path')
+parser.add_argument('--s_experiment_name', type=str, default='0527_DarkSR_JSLNet', help='model name')#推荐：日期_数据集_网络名
 parser.add_argument('--CUDA_VISIBLE_DEVICES', type=str, default='2', help='which GPU to use')
 parser.add_argument('--s_model', '-m', default=parser.parse_known_args()[0].s_experiment_name.split('_')[2]+'.'+\
                     parser.parse_known_args()[0].s_experiment_name.split('_')[2], help='model.model')
@@ -20,9 +20,7 @@ args = parser.parse_args(args=[])
 
 def inference_dual_input(model):
     #使用数据集外的数据进行推理，同理对输入的RAW图像进行简单的预处理，包括黑电平校正，初始白平衡
-    #然后将3通道的RAW和ISP sRGB同时送入网络进行计算，将网络输出结果直接保存即可
-    #推理时，直接运行 main_inference.py
-    #导入的模型和test一样在config里进行设置实验文件夹以调用对应的best pth
+    #然后将3通道的RAW和ISP sRGB同时送入网络进行计算
     #值得注意的是RAW图像和ISP的图像尺寸关系，直接使用photoshop导出的尺寸略小于raw的尺寸
     #需要使用exiftoolGUI删除默认裁剪标签，确保尺寸问题
     #相机的isp图像一般小于rawpy读取的raw图像，可能源于裁剪标签，当然也可以读取裁剪标签对raw进行裁剪而不改动isp
@@ -165,7 +163,6 @@ def inference_raw_input(model):
                     if args.crop_when_inference:
                         #图像分辨率太大时，对原图进行裁剪，然后对输出的结果进行拼接
                         crop_output = []
-                        #对测试图片裁剪，raw和isp图像对
                         crop_data, h, w, mask = utils.crop_single_test(data_out)
                         print('file pre-process done!')
                         print('starting inference······')                    
@@ -218,7 +215,6 @@ def inference_srgb_input(model):
                 if args.crop_when_inference:
                     #图像分辨率太大时，对原图进行裁剪，然后对输出的结果进行拼接
                     crop_output = []
-                    #对测试图片裁剪，raw和isp图像对
                     crop_isp, h, w, mask = utils.crop_single_test(isp_data)
                     print('file pre-process done!')
                     print('starting inference······')
