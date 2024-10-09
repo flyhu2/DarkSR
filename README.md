@@ -10,14 +10,6 @@ Now the inference/test code and our DarkSR dataset are available, and the traini
 
 In general, you only need to download `DarkSR.rar` and `Real-DarkSR.rar`, the others are the images of a specific camera model classified from DarkSR.
 
-![image](https://github.com/user-attachments/assets/b66f8275-0908-4f5d-9d20-882ac8f7efb1)
-
-
-## NetWork
-![image](https://github.com/user-attachments/assets/9f9b6017-73d7-41b4-86f1-7a11ea4aec54)
-
-![image](https://github.com/user-attachments/assets/cc376dbb-4377-48ce-abd0-40626748f854)
-
 
 ## Training
 
