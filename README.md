@@ -2,13 +2,20 @@ PyTorch code for our ACCV 2024 paper `Joint Image Super-resolution and Low-light
 
 ## Dataset
 
-
-
 You can download this dataset from [Google Cloud Drive](https://drive.google.com/drive/folders/1i68Vs-l21UtOMIsVlXnVoxvFKVqrLyKb?usp=sharing) or [Baidu Cloud Drive](https://pan.baidu.com/s/1RN9p_WBPL6Sh8FU6Go8qvg?pwd=dark)(code:dark). And 1395 pairs of RAW and sRGB images for training, 153 for testing. 
 
 Now the inference/test code and our DarkSR dataset are available, and the training code and experimental settings will come soon...
 
 In general, you only need to download `DarkSR.rar` and `Real-DarkSR.rar`, the others are the images of a specific camera model classified from DarkSR.
+
+![image](https://github.com/user-attachments/assets/b66f8275-0908-4f5d-9d20-882ac8f7efb1)
+
+
+## NetWork
+![image](https://github.com/user-attachments/assets/9f9b6017-73d7-41b4-86f1-7a11ea4aec54)
+
+![image](https://github.com/user-attachments/assets/cc376dbb-4377-48ce-abd0-40626748f854)
+
 
 ## Training
 
@@ -22,6 +29,9 @@ When training, please set the `input type`, `camera model` (the specific dataset
 During the test phase, only `b_test_only` needs to be set to True, and whether or not to crop.
 
 ## Inference
+
+![image](https://github.com/user-attachments/assets/d07207d4-e222-4d34-8593-9f672fcbdcd2)
+
 
 You can also use your own captured raw+srgb data to perform inference using the trained network, first make sure that the files are placed correctly (reference/raw and reference/isp) and then run the Inference.py file with the output in reference/result.
 
