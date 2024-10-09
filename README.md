@@ -31,13 +31,13 @@ If you find our repo useful for your research, please consider citing this paper
 
 ```
 @ARTICLE{PRNet,
-author={Ling, Mingyang and chang, Kan and Huang, Mengyuan and Li, Hengxin and Dang, shuping and Li},
+author={Ling, Mingyang and Chang, Kan and Huang, Mengyuan and Li, Hengxin and Dang, Shuping and Li Baoxin},
 journal={IEEE Transactions on Computational Imaging},
 title={PRNet: Pyramid Restoration Network for RAW Image Super-Resolution},
 year={2024},
 volume={10},
 pages={479-495},
-doi={16.1109/TCI.2024.3374084}
+doi={10.1109/TCI.2024.3374084}
 }
 ```
 
