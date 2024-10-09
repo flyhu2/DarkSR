@@ -26,3 +26,15 @@ During the test phase, only `b_test_only` needs to be set to True, and whether o
 You can also use your own captured raw+srgb data to perform inference using the trained network, first make sure that the files are placed correctly (reference/raw and reference/isp) and then run the Inference.py file with the output in reference/result.
 
 It is worth noting that with RAW+JPG images taken with a camera, different camera manufacturers may have set a default cropping region, resulting in the actual JPG resolution being smaller than RAW, one lazy way is to render the JPG image using rawpy, but such a jpg is tonally different from that taken with a camera, and the recommended way to do it is to get rid of this cropping region. The resolution of a jpg taken by a mobile phone is generally equal to RAW and no extra care is needed.
+
+If you find our repo useful for your research, please consider citing this paper and our previous work
+
+@ARTICLE{PRNet,
+author={Ling, Mingyang and chang, Kan and Huang, Mengyuan and Li, Hengxin and Dang, shuping and Li},
+journal={IEEE Transactions on Computational Imaging},
+title={PRNet: Pyramid Restoration Network for RAW Image Super-Resolution},
+year={2024},
+volume={10},
+pages={479-495},
+doi={16.1109/TCI.2024.3374084}
+}
