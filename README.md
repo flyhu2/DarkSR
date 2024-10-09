@@ -29,6 +29,7 @@ It is worth noting that with RAW+JPG images taken with a camera, different camer
 
 If you find our repo useful for your research, please consider citing this paper and our previous work
 
+```
 @ARTICLE{PRNet,
 author={Ling, Mingyang and chang, Kan and Huang, Mengyuan and Li, Hengxin and Dang, shuping and Li},
 journal={IEEE Transactions on Computational Imaging},
@@ -38,3 +39,8 @@ volume={10},
 pages={479-495},
 doi={16.1109/TCI.2024.3374084}
 }
+```
+
+
+
+
