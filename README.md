@@ -34,7 +34,7 @@ It is worth noting that with RAW+JPG images taken with a camera, different camer
 If you find our repo useful for your research, please consider citing this paper and our previous work
 
 ```
-@InProceedings{Zhou_2024_ACCV,
+@InProceedings{JSLNet,
     author    = {Zhou, Feihu and Chang, Kan and Ling, Mingyang and Li, Hengxin and Xia, Shucheng},
     title     = {Joint Image Super-resolution and Low-light Enhancement in the Dark},
     booktitle = {Proceedings of the Asian Conference on Computer Vision (ACCV)},
@@ -46,13 +46,13 @@ If you find our repo useful for your research, please consider citing this paper
 
 ```
 @ARTICLE{PRNet,
-author={Ling, Mingyang and Chang, Kan and Huang, Mengyuan and Li, Hengxin and Dang, Shuping and Li Baoxin},
-journal={IEEE Transactions on Computational Imaging},
-title={PRNet: Pyramid Restoration Network for RAW Image Super-Resolution},
-year={2024},
-volume={10},
-pages={479-495},
-doi={10.1109/TCI.2024.3374084}
+    author={Ling, Mingyang and Chang, Kan and Huang, Mengyuan and Li, Hengxin and Dang, Shuping and Li Baoxin},
+    journal={IEEE Transactions on Computational Imaging},
+    title={PRNet: Pyramid Restoration Network for RAW Image Super-Resolution},
+    year={2024},
+    volume={10},
+    pages={479-495},
+    doi={10.1109/TCI.2024.3374084}
 }
 ```
 
